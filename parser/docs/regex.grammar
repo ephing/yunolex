@@ -1,0 +1,49 @@
+re := union
+    | simplere
+union := re ALTERNATE simplere
+simplere := concat
+    | basicre
+concat := simplere basicre
+basicre := star
+    | plus
+    | question
+    | elemre
+star := elemre KLEENE
+plus := elemre PLUS
+question := elemre QUESTION
+elemre := group
+    | any
+    | char
+    | set
+    | RBRAC
+    | CARET
+group := LPAREN re RPAREN
+any := WILDCARD
+char := LETTER
+    | NEWLINE
+    | SPACE
+    | BSLASH
+    | SQUOTE
+    | DQUOTE
+    | TAB
+set := posset
+    | negset
+posset := LBRAC setitems RBRAC
+negset := LBRAC CARET negsetitems RBRAC
+setitems := setitem
+    | setitem negsetitems
+setitem := range
+    | char
+    | LPAREN
+    | RPAREN
+    | KLEENE
+    | PLUS
+    | QUESTION
+    | LBRAC
+    | ALTERNATE
+    | WILDCARD
+negsetitems := negsetitem
+    | negsetitem negsetitems
+negsetitem := setitem
+    | CARET
+range := char HYPHEN char
