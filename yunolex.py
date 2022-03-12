@@ -54,7 +54,7 @@ def main():
     with open(file,"r") as file:
         with open(outname,"w") as outfile:
             if i:
-                outfile.write("#!/usr/bin/env python3\nimport lexer.lex \n\nlexer.lex.rules = {\n")
+                outfile.write("#!/usr/bin/env python3\nimport " + pname + ".lex as lex\n\nlex.rules = {\n")
             else:
                 outfile.write("#!/usr/bin/env python3\nimport lex\n\nlex.rules = {\n")
         count = 0

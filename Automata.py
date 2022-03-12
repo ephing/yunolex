@@ -237,7 +237,7 @@ def buildAutomata(tree):
         mach = NFA(tree.charList[0])
         mach.sigma = tree.charList + [None]
         mach.startState = 0
-        mach.deltaT = [[[1] for _ in mach.sigma], [[] for _ in mach.sigma]]
+        mach.deltaT = [[[1] for _ in range(len(mach.sigma) - 1)] + [[]], [[] for _ in mach.sigma]]
         mach.finStates = [1]
     elif tree == None:
         # this case should only be true if we did a ? regex operator, just praying I'm right haha
