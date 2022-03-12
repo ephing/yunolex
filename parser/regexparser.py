@@ -2511,7 +2511,7 @@ def action9():
     p.semstack = [RT.Prim(p.currentToken, False)] + p.semstack
 
 def action10():
-    p.semstack = [RT.Prim(".", True)] + p.semstack
+    p.semstack = [RT.Prim("\n", False)] + p.semstack
 
 def action11():
     p.semstack = [RT.Prim(" ", False)] + p.semstack
@@ -2529,20 +2529,11 @@ def action15():
     p.semstack = [RT.Prim("\t", False)] + p.semstack
 
 def action16():
-    items = p.semstack[0]
-    tree = RT.Prim(items[0], False)
-    for i in items[1:]:
-        tree = RT.Split(RT.Prim(i, False), tree)
-    p.semstack = [tree] + p.semstack[1:]
+    p.semstack = [RT.CharSelect(p.semstack[0])] + p.semstack[1:]
 
 def action17():
     items = list(set(list(map(lambda x: chr(x), range(32, 127))) + ['\n', '\t']) - set(p.semstack[0]))
-    if items == []:
-        p.semstack = p.semstack[1:]
-    tree = RT.Prim(items[0], False)
-    for i in items[1:]:
-        tree = RT.Split(RT.Prim(i, False), tree)
-    p.semstack = [tree] + p.semstack[1:]
+    p.semstack = [RT.CharSelect(items)] + p.semstack[1:]
 
 def action18():
     p.semstack = [p.semstack[1] + p.semstack[0]] + p.semstack[2:]

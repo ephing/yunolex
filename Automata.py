@@ -64,7 +64,7 @@ def altern(nfa1: NFA, nfa2: NFA):
     res = NFA(' ')
     nfa1, nfa2 = mergeSigma(deepcopy(nfa1), deepcopy(nfa2))
     res.sigma = nfa1.sigma
-    res.deltaT = [[[] for l in res.sigma]]
+    res.deltaT = [[[] for _ in res.sigma]]
     delt = deepcopy(nfa1.deltaT)
     # change numeric rep of nfa1 states to not overlap with new start state
     for state in range(len(delt)):
@@ -232,6 +232,13 @@ def buildAutomata(tree):
         mach = altern(buildAutomata(tree.ch1), buildAutomata(tree.ch2))
     elif isinstance(tree, RT.MeanKleene):
         mach = kleene(buildAutomata(tree.rep))
+    elif isinstance(tree, RT.CharSelect):
+        if tree.charList == []: return NFA('')
+        mach = NFA(tree.charList[0])
+        mach.sigma = tree.charList + [None]
+        mach.startState = 0
+        mach.deltaT = [[[1] for _ in mach.sigma], [[] for _ in mach.sigma]]
+        mach.finStates = [1]
     elif tree == None:
         # this case should only be true if we did a ? regex operator, just praying I'm right haha
         mach = NFA('')

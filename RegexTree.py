@@ -39,6 +39,13 @@ class MeanKleene(Tree):
         if self.rep != None: out = self.rep.print()
         return "Rep(" + self.rep.print() + ")"
 
+class CharSelect(Tree):
+    def __init__(self, chars):
+        self.charList = chars
+
+    def print(self):
+        return "CharSelect(" + str(self.charList) + ")"
+
 class Prim(Tree):
     def __init__(self,c: str, isW: bool):
         self.regex = c
