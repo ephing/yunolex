@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import lexer.lex as lex
+import parser.lex as lex
 
 lex.rules = {
     0: {'regex': '[(]', 'action': 'LPAREN false', 'dfa': {'startState': 0, 'sigma': ['('], 'finStates': [1], 'deltaT': [[[1]], [[]]]}},
