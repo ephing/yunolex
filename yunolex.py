@@ -28,7 +28,7 @@ def main():
     parser.add_argument('-p', metavar="DIR", type=str,
                         help="create dot files in directory  representing automata used in lexing")
     parser.add_argument('-o', metavar="FILE", type=str,
-                        help="name output file as FILE>")
+                        help="name output file as FILE")
     args = parser.parse_args()
 
     if len(sys.argv) < 2:
