@@ -1,49 +1,189 @@
 re := union
     | simplere
-union := re ALTERNATE simplere
+union := re ALTERNATE simplere #1
 simplere := concat
     | basicre
-concat := simplere basicre
+concat := simplere basicre #2
 basicre := star
     | plus
     | question
     | elemre
-star := elemre KLEENE
-plus := elemre PLUS
-question := elemre QUESTION
+star := elemre KLEENE #3
+plus := elemre PLUS #4
+question := elemre QUESTION #5
 elemre := group
     | any
     | char
     | set
-    | RBRAC
-    | CARET
+    | RBRAC #6
+    | CARET #7
 group := LPAREN re RPAREN
-any := WILDCARD
-char := LETTER
-    | NEWLINE
-    | SPACE
-    | BSLASH
-    | SQUOTE
-    | DQUOTE
-    | TAB
+any := WILDCARD #8
+char := LETTER #9
+    | NEWLINE #10
+    | SPACE #11
+    | BSLASH #12
+    | SQUOTE #13
+    | DQUOTE #14
+    | TAB #15
 set := posset
     | negset
-posset := LBRAC setitems RBRAC
-negset := LBRAC CARET negsetitems RBRAC
+posset := LBRAC setitems RBRAC #16
+negset := LBRAC CARET negsetitems RBRAC #17
 setitems := setitem
-    | setitem negsetitems
+    | setitem negsetitems #18
 setitem := range
-    | char
-    | LPAREN
-    | RPAREN
-    | KLEENE
-    | PLUS
-    | QUESTION
-    | LBRAC
-    | ALTERNATE
-    | WILDCARD
+    | char #19
+    | LPAREN #20
+    | RPAREN #21
+    | KLEENE #22
+    | PLUS #23
+    | QUESTION #24
+    | LBRAC #25
+    | ALTERNATE #26
+    | WILDCARD #27
 negsetitems := negsetitem
-    | negsetitem negsetitems
+    | negsetitem negsetitems #28
 negsetitem := setitem
-    | CARET
-range := char HYPHEN char
+    | CARET #29
+range := char HYPHEN char #30
+
+###
+
+requires {
+    import RegexTree as RT
+}
+
+#1 {
+    p.semstack = [RT.Split(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#2 {
+    p.semstack = [RT.Concat(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#3 {
+    p.semstack = [RT.MeanKleene(p.semstack[0])] + p.semstack[1:]
+}
+
+#4 {
+    p.semstack = [RT.Concat(p.semstack[0], RT.MeanKleene(p.semstack[0]))] + p.semstack[1:]
+}
+
+#5 {
+    p.semstack = [RT.Split(p.semstack[0],None)] + p.semstack[1:]
+}
+
+#6 {
+    p.semstack = [RT.Prim("]", False)] + p.semstack
+}
+
+#7 {
+    p.semstack = [RT.Prim("^", False)] + p.semstack
+}
+
+#8 {
+    p.semstack = [RT.Prim(".", True)] + p.semstack
+}
+
+#9 {
+    p.semstack = [RT.Prim(p.currentToken, False)] + p.semstack
+}
+
+#10 {
+    p.semstack = [RT.Prim(".", True)] + p.semstack
+}
+
+#11 {
+    p.semstack = [RT.Prim(" ", False)] + p.semstack
+}
+
+#12 {
+    p.semstack = [RT.Prim("\\", False)] + p.semstack
+}
+
+#13 {
+    p.semstack = [RT.Prim("\'", False)] + p.semstack
+}
+
+#14 {
+    p.semstack = [RT.Prim("\"", False)] + p.semstack
+}
+
+#15 {
+    p.semstack = [RT.Prim("\t", False)] + p.semstack
+}
+
+#16 {
+    items = p.semstack[0]
+    tree = RT.Prim(items[0], False)
+    for i in items[1:]:
+        tree = RT.Split(RT.Prim(i, False), tree)
+    p.semstack = [tree] + p.semstack[1:]
+}
+
+#17 {
+    items = list(set(list(map(lambda x: chr(x), range(32, 127))) + ['\n', '\t']) - set(p.semstack[0]))
+    if items == []:
+        p.semstack = p.semstack[1:]
+    tree = RT.Prim(items[0], False)
+    for i in items[1:]:
+        tree = RT.Split(RT.Prim(i, False), tree)
+    p.semstack = [tree] + p.semstack[1:]
+}
+
+#18 {
+    p.semstack = [p.semstack[1] + p.semstack[0]] + p.semstack[2:]
+}
+
+#19 {
+    p.semstack = [[p.semstack[0].regex]] + p.semstack[1:]
+}
+
+#20 {
+    p.semstack = [["("]] + p.semstack
+}
+
+#21 {
+    p.semstack = [[")"]] + p.semstack
+}
+
+#22 {
+    p.semstack = [["*"]] + p.semstack
+}
+
+#23 {
+    p.semstack = [["+"]] + p.semstack
+}
+
+#24 {
+    p.semstack = [["?"]] + p.semstack
+}
+
+#25 {
+    p.semstack = [["["]] + p.semstack
+}
+
+#26 {
+    p.semstack = [["|"]] + p.semstack
+}
+
+#27 {
+    p.semstack = [["."]] + p.semstack
+}
+
+#28 {
+    p.semstack = [p.semstack[1] + p.semstack[0]] + p.semstack[2:]
+}
+
+#29 {
+    p.semstack = [["^"]] + p.semstack
+}
+
+#30 {
+    char1 = p.semstack[1].regex
+    char2 = p.semstack[0].regex
+    if ord(char1) > ord(char2):
+        raise Exception("Bad range: " + char1 + "-" + char2)
+    p.semstack += list(map(lambda x : chr(x), range(ord(char1), ord(char2)+1))) + p.semstack[2:]
+}

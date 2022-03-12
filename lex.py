@@ -45,14 +45,14 @@ def peek(f):
     return out
 
 def start():
-    #if len(sys.argv) != 2:
-    if False:
+    if len(sys.argv) != 2:
         print("Format: ./lexer <input file>")
     else:
         amt = AMTracker()
-        with open("/home/joemama/Documents/personalproject/lexer2/test.txt","r") as file:
-            with open("/home/joemama/Documents/personalproject/lexer2/test.tokens", "w") as outfile:
-                with open("/home/joemama/Documents/personalproject/lexer2/test.err", "a+") as errfile:
+        with open(sys.argv[1],"r") as file:
+            filename = sys.argv[1][:sys.argv[1].find(".")]
+            with open(filename + ".tokens", "w") as outfile:
+                with open(filename + ".err", "a+") as errfile:
                     errfile.truncate(0)
                     lineNum = 1
                     colNum = 1

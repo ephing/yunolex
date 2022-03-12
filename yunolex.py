@@ -21,7 +21,7 @@ def buildRule(regex: str, action: str, dotdir: str):
 # Entrypoint
 def main():
 
-    parser = argparse.ArgumentParser(description="Yunolex, the greatest parser of them all")
+    parser = argparse.ArgumentParser(description="Yunolex, the greatest lexer of them all")
     parser.add_argument('file', metavar="SPEC", help="format: python3 yunolex.py SPEC")
     parser.add_argument('-i', metavar="PACKAGE", type=str,
                         help="build a lexer package that integrates with other python code")

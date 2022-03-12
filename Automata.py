@@ -1,5 +1,5 @@
 from copy import deepcopy
-import parser.RegexTree as RT
+import RegexTree as RT
 
 class NFA:
     def __init__(self,c: chr):

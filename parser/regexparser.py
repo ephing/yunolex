@@ -1,41 +1,43 @@
 #!/usr/bin/env python3
 import parser.parse as p
+import RegexTree as RT
+
 p.table = {
-	"\x19 ::=  ● re \x18": {
+	"\x19 :=  ● re \x18": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "elemre ::= RBRAC ● ",
-		"CARET": "elemre ::= CARET ● ",
-		"LPAREN": "group ::= LPAREN ● re RPAREN",
+		"RBRAC": "elemre := RBRAC ● ",
+		"CARET": "elemre := CARET ● ",
+		"LPAREN": "group := LPAREN ● re RPAREN",
 		"RPAREN": None,
-		"WILDCARD": "any ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "posset ::= LBRAC ● setitems RBRAC",
+		"WILDCARD": "any := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "posset := LBRAC ● setitems RBRAC",
 		"HYPHEN": None,
 		"\x18": None,
-		"re": "\x19 ::= re ● \x18",
-		"union": "re ::= union ● ",
-		"simplere": "re ::= simplere ● ",
-		"concat": "simplere ::= concat ● ",
-		"basicre": "simplere ::= basicre ● ",
-		"star": "basicre ::= star ● ",
-		"plus": "basicre ::= plus ● ",
-		"question": "basicre ::= question ● ",
-		"elemre": "basicre ::= elemre ● ",
-		"group": "elemre ::= group ● ",
-		"any": "elemre ::= any ● ",
-		"char": "elemre ::= char ● ",
-		"set": "elemre ::= set ● ",
-		"posset": "set ::= posset ● ",
-		"negset": "set ::= negset ● ",
+		"re": "\x19 := re ● \x18",
+		"union": "re := union ● ",
+		"simplere": "re := simplere ● ",
+		"concat": "simplere := concat ● ",
+		"basicre": "simplere := basicre ● ",
+		"star": "basicre := star ● ",
+		"plus": "basicre := plus ● ",
+		"question": "basicre := question ● ",
+		"elemre": "basicre := elemre ● ",
+		"group": "elemre := group ● ",
+		"any": "elemre := any ● ",
+		"char": "elemre := char ● ",
+		"set": "elemre := set ● ",
+		"posset": "set := posset ● ",
+		"negset": "set := negset ● ",
 		"setitems": None,
 		"setitem": None,
 		"negsetitems": None,
@@ -43,8 +45,8 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"\x19 ::= re ● \x18": {
-		"ALTERNATE": "union ::= re ALTERNATE ● simplere",
+	"\x19 := re ● \x18": {
+		"ALTERNATE": "union := re ALTERNATE ● simplere",
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
@@ -85,41 +87,41 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"union ::= re ALTERNATE ● simplere": {
+	"union := re ALTERNATE ● simplere": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "elemre ::= RBRAC ● ",
-		"CARET": "elemre ::= CARET ● ",
-		"LPAREN": "group ::= LPAREN ● re RPAREN",
+		"RBRAC": "elemre := RBRAC ● ",
+		"CARET": "elemre := CARET ● ",
+		"LPAREN": "group := LPAREN ● re RPAREN",
 		"RPAREN": None,
-		"WILDCARD": "any ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "posset ::= LBRAC ● setitems RBRAC",
+		"WILDCARD": "any := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "posset := LBRAC ● setitems RBRAC",
 		"HYPHEN": None,
 		"\x18": None,
 		"re": None,
 		"union": None,
-		"simplere": "union ::= re ALTERNATE simplere ● ",
-		"concat": "simplere ::= concat ● ",
-		"basicre": "simplere ::= basicre ● ",
-		"star": "basicre ::= star ● ",
-		"plus": "basicre ::= plus ● ",
-		"question": "basicre ::= question ● ",
-		"elemre": "basicre ::= elemre ● ",
-		"group": "elemre ::= group ● ",
-		"any": "elemre ::= any ● ",
-		"char": "elemre ::= char ● ",
-		"set": "elemre ::= set ● ",
-		"posset": "set ::= posset ● ",
-		"negset": "set ::= negset ● ",
+		"simplere": "union := re ALTERNATE simplere ● ",
+		"concat": "simplere := concat ● ",
+		"basicre": "simplere := basicre ● ",
+		"star": "basicre := star ● ",
+		"plus": "basicre := plus ● ",
+		"question": "basicre := question ● ",
+		"elemre": "basicre := elemre ● ",
+		"group": "elemre := group ● ",
+		"any": "elemre := any ● ",
+		"char": "elemre := char ● ",
+		"set": "elemre := set ● ",
+		"posset": "set := posset ● ",
+		"negset": "set := negset ● ",
 		"setitems": None,
 		"setitem": None,
 		"negsetitems": None,
@@ -127,41 +129,41 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"union ::= re ALTERNATE simplere ● ": {
+	"union := re ALTERNATE simplere ● ": {
 		"ALTERNATE": ('union', 3),
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "elemre ::= RBRAC ● ",
-		"CARET": "elemre ::= CARET ● ",
-		"LPAREN": "group ::= LPAREN ● re RPAREN",
+		"RBRAC": "elemre := RBRAC ● ",
+		"CARET": "elemre := CARET ● ",
+		"LPAREN": "group := LPAREN ● re RPAREN",
 		"RPAREN": ('union', 3),
-		"WILDCARD": "any ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "posset ::= LBRAC ● setitems RBRAC",
+		"WILDCARD": "any := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "posset := LBRAC ● setitems RBRAC",
 		"HYPHEN": None,
 		"\x18": ('union', 3),
 		"re": None,
 		"union": None,
 		"simplere": None,
 		"concat": None,
-		"basicre": "concat ::= simplere basicre ● ",
-		"star": "basicre ::= star ● ",
-		"plus": "basicre ::= plus ● ",
-		"question": "basicre ::= question ● ",
-		"elemre": "basicre ::= elemre ● ",
-		"group": "elemre ::= group ● ",
-		"any": "elemre ::= any ● ",
-		"char": "elemre ::= char ● ",
-		"set": "elemre ::= set ● ",
-		"posset": "set ::= posset ● ",
-		"negset": "set ::= negset ● ",
+		"basicre": "concat := simplere basicre ● ",
+		"star": "basicre := star ● ",
+		"plus": "basicre := plus ● ",
+		"question": "basicre := question ● ",
+		"elemre": "basicre := elemre ● ",
+		"group": "elemre := group ● ",
+		"any": "elemre := any ● ",
+		"char": "elemre := char ● ",
+		"set": "elemre := set ● ",
+		"posset": "set := posset ● ",
+		"negset": "set := negset ● ",
 		"setitems": None,
 		"setitem": None,
 		"negsetitems": None,
@@ -169,7 +171,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"concat ::= simplere basicre ● ": {
+	"concat := simplere basicre ● ": {
 		"ALTERNATE": ('concat', 2),
 		"KLEENE": None,
 		"PLUS": None,
@@ -211,7 +213,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"basicre ::= star ● ": {
+	"basicre := star ● ": {
 		"ALTERNATE": ('basicre', 1),
 		"KLEENE": None,
 		"PLUS": None,
@@ -253,7 +255,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"basicre ::= plus ● ": {
+	"basicre := plus ● ": {
 		"ALTERNATE": ('basicre', 1),
 		"KLEENE": None,
 		"PLUS": None,
@@ -295,7 +297,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"basicre ::= question ● ": {
+	"basicre := question ● ": {
 		"ALTERNATE": ('basicre', 1),
 		"KLEENE": None,
 		"PLUS": None,
@@ -337,11 +339,11 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"basicre ::= elemre ● ": {
+	"basicre := elemre ● ": {
 		"ALTERNATE": ('basicre', 1),
-		"KLEENE": "star ::= elemre KLEENE ● ",
-		"PLUS": "plus ::= elemre PLUS ● ",
-		"QUESTION": "question ::= elemre QUESTION ● ",
+		"KLEENE": "star := elemre KLEENE ● ",
+		"PLUS": "plus := elemre PLUS ● ",
+		"QUESTION": "question := elemre QUESTION ● ",
 		"RBRAC": ('basicre', 1),
 		"CARET": ('basicre', 1),
 		"LPAREN": ('basicre', 1),
@@ -379,7 +381,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"star ::= elemre KLEENE ● ": {
+	"star := elemre KLEENE ● ": {
 		"ALTERNATE": ('star', 2),
 		"KLEENE": None,
 		"PLUS": None,
@@ -421,7 +423,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"plus ::= elemre PLUS ● ": {
+	"plus := elemre PLUS ● ": {
 		"ALTERNATE": ('plus', 2),
 		"KLEENE": None,
 		"PLUS": None,
@@ -463,7 +465,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"question ::= elemre QUESTION ● ": {
+	"question := elemre QUESTION ● ": {
 		"ALTERNATE": ('question', 2),
 		"KLEENE": None,
 		"PLUS": None,
@@ -505,7 +507,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"elemre ::= group ● ": {
+	"elemre := group ● ": {
 		"ALTERNATE": ('elemre', 1),
 		"KLEENE": ('elemre', 1),
 		"PLUS": ('elemre', 1),
@@ -547,7 +549,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"elemre ::= any ● ": {
+	"elemre := any ● ": {
 		"ALTERNATE": ('elemre', 1),
 		"KLEENE": ('elemre', 1),
 		"PLUS": ('elemre', 1),
@@ -589,7 +591,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"elemre ::= char ● ": {
+	"elemre := char ● ": {
 		"ALTERNATE": ('elemre', 1),
 		"KLEENE": ('elemre', 1),
 		"PLUS": ('elemre', 1),
@@ -631,7 +633,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"elemre ::= set ● ": {
+	"elemre := set ● ": {
 		"ALTERNATE": ('elemre', 1),
 		"KLEENE": ('elemre', 1),
 		"PLUS": ('elemre', 1),
@@ -673,7 +675,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"set ::= posset ● ": {
+	"set := posset ● ": {
 		"ALTERNATE": ('set', 1),
 		"KLEENE": ('set', 1),
 		"PLUS": ('set', 1),
@@ -715,7 +717,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"set ::= negset ● ": {
+	"set := negset ● ": {
 		"ALTERNATE": ('set', 1),
 		"KLEENE": ('set', 1),
 		"PLUS": ('set', 1),
@@ -757,7 +759,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"elemre ::= RBRAC ● ": {
+	"elemre := RBRAC ● ": {
 		"ALTERNATE": ('elemre', 1),
 		"KLEENE": ('elemre', 1),
 		"PLUS": ('elemre', 1),
@@ -799,7 +801,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"elemre ::= CARET ● ": {
+	"elemre := CARET ● ": {
 		"ALTERNATE": ('elemre', 1),
 		"KLEENE": ('elemre', 1),
 		"PLUS": ('elemre', 1),
@@ -841,41 +843,41 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"group ::= LPAREN ● re RPAREN": {
+	"group := LPAREN ● re RPAREN": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "elemre ::= RBRAC ● ",
-		"CARET": "elemre ::= CARET ● ",
-		"LPAREN": "group ::= LPAREN ● re RPAREN",
+		"RBRAC": "elemre := RBRAC ● ",
+		"CARET": "elemre := CARET ● ",
+		"LPAREN": "group := LPAREN ● re RPAREN",
 		"RPAREN": None,
-		"WILDCARD": "any ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "posset ::= LBRAC ● setitems RBRAC",
+		"WILDCARD": "any := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "posset := LBRAC ● setitems RBRAC",
 		"HYPHEN": None,
 		"\x18": None,
-		"re": "group ::= LPAREN re ● RPAREN",
-		"union": "re ::= union ● ",
-		"simplere": "re ::= simplere ● ",
-		"concat": "simplere ::= concat ● ",
-		"basicre": "simplere ::= basicre ● ",
-		"star": "basicre ::= star ● ",
-		"plus": "basicre ::= plus ● ",
-		"question": "basicre ::= question ● ",
-		"elemre": "basicre ::= elemre ● ",
-		"group": "elemre ::= group ● ",
-		"any": "elemre ::= any ● ",
-		"char": "elemre ::= char ● ",
-		"set": "elemre ::= set ● ",
-		"posset": "set ::= posset ● ",
-		"negset": "set ::= negset ● ",
+		"re": "group := LPAREN re ● RPAREN",
+		"union": "re := union ● ",
+		"simplere": "re := simplere ● ",
+		"concat": "simplere := concat ● ",
+		"basicre": "simplere := basicre ● ",
+		"star": "basicre := star ● ",
+		"plus": "basicre := plus ● ",
+		"question": "basicre := question ● ",
+		"elemre": "basicre := elemre ● ",
+		"group": "elemre := group ● ",
+		"any": "elemre := any ● ",
+		"char": "elemre := char ● ",
+		"set": "elemre := set ● ",
+		"posset": "set := posset ● ",
+		"negset": "set := negset ● ",
 		"setitems": None,
 		"setitem": None,
 		"negsetitems": None,
@@ -883,15 +885,15 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"group ::= LPAREN re ● RPAREN": {
-		"ALTERNATE": "union ::= re ALTERNATE ● simplere",
+	"group := LPAREN re ● RPAREN": {
+		"ALTERNATE": "union := re ALTERNATE ● simplere",
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
 		"RBRAC": None,
 		"CARET": None,
 		"LPAREN": None,
-		"RPAREN": "group ::= LPAREN re RPAREN ● ",
+		"RPAREN": "group := LPAREN re RPAREN ● ",
 		"WILDCARD": None,
 		"LETTER": None,
 		"NEWLINE": None,
@@ -925,7 +927,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"group ::= LPAREN re RPAREN ● ": {
+	"group := LPAREN re RPAREN ● ": {
 		"ALTERNATE": ('group', 3),
 		"KLEENE": ('group', 3),
 		"PLUS": ('group', 3),
@@ -967,7 +969,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"re ::= union ● ": {
+	"re := union ● ": {
 		"ALTERNATE": ('re', 1),
 		"KLEENE": None,
 		"PLUS": None,
@@ -1009,41 +1011,41 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"re ::= simplere ● ": {
+	"re := simplere ● ": {
 		"ALTERNATE": ('re', 1),
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "elemre ::= RBRAC ● ",
-		"CARET": "elemre ::= CARET ● ",
-		"LPAREN": "group ::= LPAREN ● re RPAREN",
+		"RBRAC": "elemre := RBRAC ● ",
+		"CARET": "elemre := CARET ● ",
+		"LPAREN": "group := LPAREN ● re RPAREN",
 		"RPAREN": ('re', 1),
-		"WILDCARD": "any ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "posset ::= LBRAC ● setitems RBRAC",
+		"WILDCARD": "any := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "posset := LBRAC ● setitems RBRAC",
 		"HYPHEN": None,
 		"\x18": ('re', 1),
 		"re": None,
 		"union": None,
 		"simplere": None,
 		"concat": None,
-		"basicre": "concat ::= simplere basicre ● ",
-		"star": "basicre ::= star ● ",
-		"plus": "basicre ::= plus ● ",
-		"question": "basicre ::= question ● ",
-		"elemre": "basicre ::= elemre ● ",
-		"group": "elemre ::= group ● ",
-		"any": "elemre ::= any ● ",
-		"char": "elemre ::= char ● ",
-		"set": "elemre ::= set ● ",
-		"posset": "set ::= posset ● ",
-		"negset": "set ::= negset ● ",
+		"basicre": "concat := simplere basicre ● ",
+		"star": "basicre := star ● ",
+		"plus": "basicre := plus ● ",
+		"question": "basicre := question ● ",
+		"elemre": "basicre := elemre ● ",
+		"group": "elemre := group ● ",
+		"any": "elemre := any ● ",
+		"char": "elemre := char ● ",
+		"set": "elemre := set ● ",
+		"posset": "set := posset ● ",
+		"negset": "set := negset ● ",
 		"setitems": None,
 		"setitem": None,
 		"negsetitems": None,
@@ -1051,7 +1053,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"any ::= WILDCARD ● ": {
+	"any := WILDCARD ● ": {
 		"ALTERNATE": ('any', 1),
 		"KLEENE": ('any', 1),
 		"PLUS": ('any', 1),
@@ -1093,7 +1095,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= LETTER ● ": {
+	"char := LETTER ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1135,7 +1137,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= NEWLINE ● ": {
+	"char := NEWLINE ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1177,7 +1179,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= SPACE ● ": {
+	"char := SPACE ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1219,7 +1221,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= BSLASH ● ": {
+	"char := BSLASH ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1261,7 +1263,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= SQUOTE ● ": {
+	"char := SQUOTE ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1303,7 +1305,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= DQUOTE ● ": {
+	"char := DQUOTE ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1345,7 +1347,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"char ::= TAB ● ": {
+	"char := TAB ● ": {
 		"ALTERNATE": ('char', 1),
 		"KLEENE": ('char', 1),
 		"PLUS": ('char', 1),
@@ -1387,24 +1389,24 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"posset ::= LBRAC ● setitems RBRAC": {
-		"ALTERNATE": "setitem ::= ALTERNATE ● ",
-		"KLEENE": "setitem ::= KLEENE ● ",
-		"PLUS": "setitem ::= PLUS ● ",
-		"QUESTION": "setitem ::= QUESTION ● ",
+	"posset := LBRAC ● setitems RBRAC": {
+		"ALTERNATE": "setitem := ALTERNATE ● ",
+		"KLEENE": "setitem := KLEENE ● ",
+		"PLUS": "setitem := PLUS ● ",
+		"QUESTION": "setitem := QUESTION ● ",
 		"RBRAC": None,
-		"CARET": "negset ::= LBRAC CARET ● negsetitems RBRAC",
-		"LPAREN": "setitem ::= LPAREN ● ",
-		"RPAREN": "setitem ::= RPAREN ● ",
-		"WILDCARD": "setitem ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "setitem ::= LBRAC ● ",
+		"CARET": "negset := LBRAC CARET ● negsetitems RBRAC",
+		"LPAREN": "setitem := LPAREN ● ",
+		"RPAREN": "setitem := RPAREN ● ",
+		"WILDCARD": "setitem := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "setitem := LBRAC ● ",
 		"HYPHEN": None,
 		"\x18": None,
 		"re": None,
@@ -1418,18 +1420,18 @@ p.table = {
 		"elemre": None,
 		"group": None,
 		"any": None,
-		"char": "setitem ::= char ● ",
+		"char": "setitem := char ● ",
 		"set": None,
 		"posset": None,
 		"negset": None,
-		"setitems": "posset ::= LBRAC setitems ● RBRAC",
-		"setitem": "setitems ::= setitem ● ",
+		"setitems": "posset := LBRAC setitems ● RBRAC",
+		"setitem": "setitems := setitem ● ",
 		"negsetitems": None,
 		"negsetitem": None,
-		"range": "setitem ::= range ● ",
+		"range": "setitem := range ● ",
 		"\x19": None,
 	},
-	"setitem ::= char ● ": {
+	"setitem := char ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -1447,7 +1449,7 @@ p.table = {
 		"DQUOTE": ('setitem', 1),
 		"TAB": ('setitem', 1),
 		"LBRAC": ('setitem', 1),
-		"HYPHEN": "range ::= char HYPHEN ● char",
+		"HYPHEN": "range := char HYPHEN ● char",
 		"\x18": None,
 		"re": None,
 		"union": None,
@@ -1471,7 +1473,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"range ::= char HYPHEN ● char": {
+	"range := char HYPHEN ● char": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
@@ -1481,13 +1483,13 @@ p.table = {
 		"LPAREN": None,
 		"RPAREN": None,
 		"WILDCARD": None,
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
 		"LBRAC": None,
 		"HYPHEN": None,
 		"\x18": None,
@@ -1502,7 +1504,7 @@ p.table = {
 		"elemre": None,
 		"group": None,
 		"any": None,
-		"char": "range ::= char HYPHEN char ● ",
+		"char": "range := char HYPHEN char ● ",
 		"set": None,
 		"posset": None,
 		"negset": None,
@@ -1513,7 +1515,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"range ::= char HYPHEN char ● ": {
+	"range := char HYPHEN char ● ": {
 		"ALTERNATE": ('range', 3),
 		"KLEENE": ('range', 3),
 		"PLUS": ('range', 3),
@@ -1555,12 +1557,12 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"posset ::= LBRAC setitems ● RBRAC": {
+	"posset := LBRAC setitems ● RBRAC": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "posset ::= LBRAC setitems RBRAC ● ",
+		"RBRAC": "posset := LBRAC setitems RBRAC ● ",
 		"CARET": None,
 		"LPAREN": None,
 		"RPAREN": None,
@@ -1597,7 +1599,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"posset ::= LBRAC setitems RBRAC ● ": {
+	"posset := LBRAC setitems RBRAC ● ": {
 		"ALTERNATE": ('posset', 3),
 		"KLEENE": ('posset', 3),
 		"PLUS": ('posset', 3),
@@ -1639,24 +1641,24 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitems ::= setitem ● ": {
-		"ALTERNATE": "setitem ::= ALTERNATE ● ",
-		"KLEENE": "setitem ::= KLEENE ● ",
-		"PLUS": "setitem ::= PLUS ● ",
-		"QUESTION": "setitem ::= QUESTION ● ",
+	"setitems := setitem ● ": {
+		"ALTERNATE": "setitem := ALTERNATE ● ",
+		"KLEENE": "setitem := KLEENE ● ",
+		"PLUS": "setitem := PLUS ● ",
+		"QUESTION": "setitem := QUESTION ● ",
 		"RBRAC": ('setitems', 1),
-		"CARET": "negsetitem ::= CARET ● ",
-		"LPAREN": "setitem ::= LPAREN ● ",
-		"RPAREN": "setitem ::= RPAREN ● ",
-		"WILDCARD": "setitem ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "setitem ::= LBRAC ● ",
+		"CARET": "negsetitem := CARET ● ",
+		"LPAREN": "setitem := LPAREN ● ",
+		"RPAREN": "setitem := RPAREN ● ",
+		"WILDCARD": "setitem := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "setitem := LBRAC ● ",
 		"HYPHEN": None,
 		"\x18": None,
 		"re": None,
@@ -1670,18 +1672,18 @@ p.table = {
 		"elemre": None,
 		"group": None,
 		"any": None,
-		"char": "setitem ::= char ● ",
+		"char": "setitem := char ● ",
 		"set": None,
 		"posset": None,
 		"negset": None,
 		"setitems": None,
-		"setitem": "negsetitem ::= setitem ● ",
-		"negsetitems": "setitems ::= setitem negsetitems ● ",
-		"negsetitem": "negsetitems ::= negsetitem ● ",
-		"range": "setitem ::= range ● ",
+		"setitem": "negsetitem := setitem ● ",
+		"negsetitems": "setitems := setitem negsetitems ● ",
+		"negsetitem": "negsetitems := negsetitem ● ",
+		"range": "setitem := range ● ",
 		"\x19": None,
 	},
-	"negsetitem ::= setitem ● ": {
+	"negsetitem := setitem ● ": {
 		"ALTERNATE": ('negsetitem', 1),
 		"KLEENE": ('negsetitem', 1),
 		"PLUS": ('negsetitem', 1),
@@ -1723,7 +1725,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitems ::= setitem negsetitems ● ": {
+	"setitems := setitem negsetitems ● ": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
@@ -1765,24 +1767,24 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"negsetitems ::= negsetitem ● ": {
-		"ALTERNATE": "setitem ::= ALTERNATE ● ",
-		"KLEENE": "setitem ::= KLEENE ● ",
-		"PLUS": "setitem ::= PLUS ● ",
-		"QUESTION": "setitem ::= QUESTION ● ",
+	"negsetitems := negsetitem ● ": {
+		"ALTERNATE": "setitem := ALTERNATE ● ",
+		"KLEENE": "setitem := KLEENE ● ",
+		"PLUS": "setitem := PLUS ● ",
+		"QUESTION": "setitem := QUESTION ● ",
 		"RBRAC": ('negsetitems', 1),
-		"CARET": "negsetitem ::= CARET ● ",
-		"LPAREN": "setitem ::= LPAREN ● ",
-		"RPAREN": "setitem ::= RPAREN ● ",
-		"WILDCARD": "setitem ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "setitem ::= LBRAC ● ",
+		"CARET": "negsetitem := CARET ● ",
+		"LPAREN": "setitem := LPAREN ● ",
+		"RPAREN": "setitem := RPAREN ● ",
+		"WILDCARD": "setitem := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "setitem := LBRAC ● ",
 		"HYPHEN": None,
 		"\x18": None,
 		"re": None,
@@ -1796,18 +1798,18 @@ p.table = {
 		"elemre": None,
 		"group": None,
 		"any": None,
-		"char": "setitem ::= char ● ",
+		"char": "setitem := char ● ",
 		"set": None,
 		"posset": None,
 		"negset": None,
 		"setitems": None,
-		"setitem": "negsetitem ::= setitem ● ",
-		"negsetitems": "negsetitems ::= negsetitem negsetitems ● ",
-		"negsetitem": "negsetitems ::= negsetitem ● ",
-		"range": "setitem ::= range ● ",
+		"setitem": "negsetitem := setitem ● ",
+		"negsetitems": "negsetitems := negsetitem negsetitems ● ",
+		"negsetitem": "negsetitems := negsetitem ● ",
+		"range": "setitem := range ● ",
 		"\x19": None,
 	},
-	"negsetitems ::= negsetitem negsetitems ● ": {
+	"negsetitems := negsetitem negsetitems ● ": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
@@ -1849,7 +1851,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= range ● ": {
+	"setitem := range ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -1891,7 +1893,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= ALTERNATE ● ": {
+	"setitem := ALTERNATE ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -1933,7 +1935,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= KLEENE ● ": {
+	"setitem := KLEENE ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -1975,7 +1977,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= PLUS ● ": {
+	"setitem := PLUS ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -2017,7 +2019,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= QUESTION ● ": {
+	"setitem := QUESTION ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -2059,7 +2061,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"negsetitem ::= CARET ● ": {
+	"negsetitem := CARET ● ": {
 		"ALTERNATE": ('negsetitem', 1),
 		"KLEENE": ('negsetitem', 1),
 		"PLUS": ('negsetitem', 1),
@@ -2101,7 +2103,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= LPAREN ● ": {
+	"setitem := LPAREN ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -2143,7 +2145,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= RPAREN ● ": {
+	"setitem := RPAREN ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -2185,7 +2187,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= WILDCARD ● ": {
+	"setitem := WILDCARD ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -2227,7 +2229,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"setitem ::= LBRAC ● ": {
+	"setitem := LBRAC ● ": {
 		"ALTERNATE": ('setitem', 1),
 		"KLEENE": ('setitem', 1),
 		"PLUS": ('setitem', 1),
@@ -2269,24 +2271,24 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"negset ::= LBRAC CARET ● negsetitems RBRAC": {
-		"ALTERNATE": "setitem ::= ALTERNATE ● ",
-		"KLEENE": "setitem ::= KLEENE ● ",
-		"PLUS": "setitem ::= PLUS ● ",
-		"QUESTION": "setitem ::= QUESTION ● ",
+	"negset := LBRAC CARET ● negsetitems RBRAC": {
+		"ALTERNATE": "setitem := ALTERNATE ● ",
+		"KLEENE": "setitem := KLEENE ● ",
+		"PLUS": "setitem := PLUS ● ",
+		"QUESTION": "setitem := QUESTION ● ",
 		"RBRAC": None,
-		"CARET": "negsetitem ::= CARET ● ",
-		"LPAREN": "setitem ::= LPAREN ● ",
-		"RPAREN": "setitem ::= RPAREN ● ",
-		"WILDCARD": "setitem ::= WILDCARD ● ",
-		"LETTER": "char ::= LETTER ● ",
-		"NEWLINE": "char ::= NEWLINE ● ",
-		"SPACE": "char ::= SPACE ● ",
-		"BSLASH": "char ::= BSLASH ● ",
-		"SQUOTE": "char ::= SQUOTE ● ",
-		"DQUOTE": "char ::= DQUOTE ● ",
-		"TAB": "char ::= TAB ● ",
-		"LBRAC": "setitem ::= LBRAC ● ",
+		"CARET": "negsetitem := CARET ● ",
+		"LPAREN": "setitem := LPAREN ● ",
+		"RPAREN": "setitem := RPAREN ● ",
+		"WILDCARD": "setitem := WILDCARD ● ",
+		"LETTER": "char := LETTER ● ",
+		"NEWLINE": "char := NEWLINE ● ",
+		"SPACE": "char := SPACE ● ",
+		"BSLASH": "char := BSLASH ● ",
+		"SQUOTE": "char := SQUOTE ● ",
+		"DQUOTE": "char := DQUOTE ● ",
+		"TAB": "char := TAB ● ",
+		"LBRAC": "setitem := LBRAC ● ",
 		"HYPHEN": None,
 		"\x18": None,
 		"re": None,
@@ -2300,23 +2302,23 @@ p.table = {
 		"elemre": None,
 		"group": None,
 		"any": None,
-		"char": "setitem ::= char ● ",
+		"char": "setitem := char ● ",
 		"set": None,
 		"posset": None,
 		"negset": None,
 		"setitems": None,
-		"setitem": "negsetitem ::= setitem ● ",
-		"negsetitems": "negset ::= LBRAC CARET negsetitems ● RBRAC",
-		"negsetitem": "negsetitems ::= negsetitem ● ",
-		"range": "setitem ::= range ● ",
+		"setitem": "negsetitem := setitem ● ",
+		"negsetitems": "negset := LBRAC CARET negsetitems ● RBRAC",
+		"negsetitem": "negsetitems := negsetitem ● ",
+		"range": "setitem := range ● ",
 		"\x19": None,
 	},
-	"negset ::= LBRAC CARET negsetitems ● RBRAC": {
+	"negset := LBRAC CARET negsetitems ● RBRAC": {
 		"ALTERNATE": None,
 		"KLEENE": None,
 		"PLUS": None,
 		"QUESTION": None,
-		"RBRAC": "negset ::= LBRAC CARET negsetitems RBRAC ● ",
+		"RBRAC": "negset := LBRAC CARET negsetitems RBRAC ● ",
 		"CARET": None,
 		"LPAREN": None,
 		"RPAREN": None,
@@ -2353,7 +2355,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"negset ::= LBRAC CARET negsetitems RBRAC ● ": {
+	"negset := LBRAC CARET negsetitems RBRAC ● ": {
 		"ALTERNATE": ('negset', 4),
 		"KLEENE": ('negset', 4),
 		"PLUS": ('negset', 4),
@@ -2395,7 +2397,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"simplere ::= concat ● ": {
+	"simplere := concat ● ": {
 		"ALTERNATE": ('simplere', 1),
 		"KLEENE": None,
 		"PLUS": None,
@@ -2437,7 +2439,7 @@ p.table = {
 		"range": None,
 		"\x19": None,
 	},
-	"simplere ::= basicre ● ": {
+	"simplere := basicre ● ": {
 		"ALTERNATE": ('simplere', 1),
 		"KLEENE": None,
 		"PLUS": None,
@@ -2481,3 +2483,139 @@ p.table = {
 	},
 }
 p.start = list(p.table.keys())[0]
+def action1():
+    p.semstack = [RT.Split(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+
+def action2():
+    p.semstack = [RT.Concat(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+
+def action3():
+    p.semstack = [RT.MeanKleene(p.semstack[0])] + p.semstack[1:]
+
+def action4():
+    p.semstack = [RT.Concat(p.semstack[0], RT.MeanKleene(p.semstack[0]))] + p.semstack[1:]
+
+def action5():
+    p.semstack = [RT.Split(p.semstack[0],None)] + p.semstack[1:]
+
+def action6():
+    p.semstack = [RT.Prim("]", False)] + p.semstack
+
+def action7():
+    p.semstack = [RT.Prim("^", False)] + p.semstack
+
+def action8():
+    p.semstack = [RT.Prim(".", True)] + p.semstack
+
+def action9():
+    p.semstack = [RT.Prim(p.currentToken, False)] + p.semstack
+
+def action10():
+    p.semstack = [RT.Prim(".", True)] + p.semstack
+
+def action11():
+    p.semstack = [RT.Prim(" ", False)] + p.semstack
+
+def action12():
+    p.semstack = [RT.Prim("\\", False)] + p.semstack
+
+def action13():
+    p.semstack = [RT.Prim("\'", False)] + p.semstack
+
+def action14():
+    p.semstack = [RT.Prim("\"", False)] + p.semstack
+
+def action15():
+    p.semstack = [RT.Prim("\t", False)] + p.semstack
+
+def action16():
+    items = p.semstack[0]
+    tree = RT.Prim(items[0], False)
+    for i in items[1:]:
+        tree = RT.Split(RT.Prim(i, False), tree)
+    p.semstack = [tree] + p.semstack[1:]
+
+def action17():
+    items = list(set(list(map(lambda x: chr(x), range(32, 127))) + ['\n', '\t']) - set(p.semstack[0]))
+    if items == []:
+        p.semstack = p.semstack[1:]
+    tree = RT.Prim(items[0], False)
+    for i in items[1:]:
+        tree = RT.Split(RT.Prim(i, False), tree)
+    p.semstack = [tree] + p.semstack[1:]
+
+def action18():
+    p.semstack = [p.semstack[1] + p.semstack[0]] + p.semstack[2:]
+
+def action19():
+    p.semstack = [[p.semstack[0].regex]] + p.semstack[1:]
+
+def action20():
+    p.semstack = [["("]] + p.semstack
+
+def action21():
+    p.semstack = [[")"]] + p.semstack
+
+def action22():
+    p.semstack = [["*"]] + p.semstack
+
+def action23():
+    p.semstack = [["+"]] + p.semstack
+
+def action24():
+    p.semstack = [["?"]] + p.semstack
+
+def action25():
+    p.semstack = [["["]] + p.semstack
+
+def action26():
+    p.semstack = [["|"]] + p.semstack
+
+def action27():
+    p.semstack = [["."]] + p.semstack
+
+def action28():
+    p.semstack = [p.semstack[1] + p.semstack[0]] + p.semstack[2:]
+
+def action29():
+    p.semstack = [["^"]] + p.semstack
+
+def action30():
+    char1 = p.semstack[1].regex
+    char2 = p.semstack[0].regex
+    if ord(char1) > ord(char2):
+        raise Exception("Bad range: " + char1 + "-" + char2)
+    p.semstack += list(map(lambda x : chr(x), range(ord(char1), ord(char2)+1))) + p.semstack[2:]
+
+p.actions = {
+	"union := re ALTERNATE simplere ● ": action1,
+	"concat := simplere basicre ● ": action2,
+	"star := elemre KLEENE ● ": action3,
+	"plus := elemre PLUS ● ": action4,
+	"question := elemre QUESTION ● ": action5,
+	"elemre := RBRAC ● ": action6,
+	"elemre := CARET ● ": action7,
+	"any := WILDCARD ● ": action8,
+	"char := LETTER ● ": action9,
+	"char := NEWLINE ● ": action10,
+	"char := SPACE ● ": action11,
+	"char := BSLASH ● ": action12,
+	"char := SQUOTE ● ": action13,
+	"char := DQUOTE ● ": action14,
+	"char := TAB ● ": action15,
+	"posset := LBRAC setitems RBRAC ● ": action16,
+	"negset := LBRAC CARET negsetitems RBRAC ● ": action17,
+	"setitems := setitem negsetitems ● ": action18,
+	"setitem := char ● ": action19,
+	"setitem := LPAREN ● ": action20,
+	"setitem := RPAREN ● ": action21,
+	"setitem := KLEENE ● ": action22,
+	"setitem := PLUS ● ": action23,
+	"setitem := QUESTION ● ": action24,
+	"setitem := LBRAC ● ": action25,
+	"setitem := ALTERNATE ● ": action26,
+	"setitem := WILDCARD ● ": action27,
+	"negsetitems := negsetitem negsetitems ● ": action28,
+	"negsetitem := CARET ● ": action29,
+	"range := char HYPHEN char ● ": action30,
+}
