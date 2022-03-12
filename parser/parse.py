@@ -12,8 +12,9 @@ class Parser:
         self.stack = [start]
         self.lookahead = 0
         self.tkstream = lexer.lex.start(tks)
-        global currentToken
-        currentToken = self.tkstream[self.lookahead]["lexeme"]
+        global semstack, currentToken
+        semstack = []
+        currentToken = None
 
     def parse(self):
         global semstack
@@ -34,7 +35,7 @@ class Parser:
                 self.stack = [next] + self.stack
                 self.lookahead += 1
                 global currentToken
-                currentToken = self.tkstream[self.lookahead]["lexeme"]
+                currentToken = self.tkstream[self.lookahead - 1]["lexeme"]
             #reduce
             else:
                 if self.stack[0] in actions.keys():
