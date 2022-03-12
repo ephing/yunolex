@@ -2,6 +2,7 @@
 import parser.regexparser as RP
 import Automata as AM
 import DFAPrinter as DP
+import argparse
 import sys, os, shutil
 
 # stored info from spec file
@@ -17,49 +18,29 @@ def buildRule(regex: str, action: str, dotdir: str):
 
     return out
 
-def printUsage():
-    print("Format: python3 main.py <.spec>")
-    print("-i <package>: Build a lexer package that integrates with other python code")
-    print("-p <dir>: Create dot files in directory <dir> representing automata used in lexing")
-    print("-o <file>: Name output file as <file>")
+# Entrypoint
+def main():
 
-if len(sys.argv) < 2:
-    printUsage()
-    exit(1)
-else:
-    i = False
-    p = False
-    outname = "lexer"
-    pname = None
-    dir = None
-    skip = False
-    file = None
-    for flag in range(1, len(sys.argv)):
-        if skip: 
-            skip = False
-            continue
-        if sys.argv[flag] == "-i":
-            i = True
-            pname = sys.argv[flag + 1]
-            skip = True
-        elif sys.argv[flag] == "-p":
-            p = True
-            dir = sys.argv[flag + 1]
-            skip = True
-        elif sys.argv[flag] == "-o":
-            outname = sys.argv[flag + 1]
-            skip = True
-        elif file == None:
-            file = sys.argv[flag]
-        else:
-            printUsage()
-            exit(1)
+    parser = argparse.ArgumentParser(description="Yunolex, the greatest parser of them all")
+    parser.add_argument('file', metavar="SPEC", help="format: python3 yunolex.py SPEC")
+    parser.add_argument('-i', metavar="PACKAGE", type=str,
+                        help="build a lexer package that integrates with other python code")
+    parser.add_argument('-p', metavar="DIR", type=str,
+                        help="create dot files in directory  representing automata used in lexing")
+    parser.add_argument('-o', metavar="FILE", type=str,
+                        help="name output file as FILE>")
+    args = parser.parse_args()
 
-    if file == None:
-        printUsage()
+    if len(sys.argv) < 2:
+        parser.print_help()
         exit(1)
-    # read and parse spec file
 
+    file = args.file
+    pname = args.i
+    dir = args.p
+    outname = "lexer" if args.o is None else args.o
+    i = pname is not None
+    
     if i:
         try:
             os.mkdir(pname)
@@ -103,3 +84,6 @@ else:
             else:
                 outfile.write("}\n\n")
                 outfile.write("lex.start()\n")
+
+if __name__ == "__main__":
+    main()
