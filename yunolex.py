@@ -21,24 +21,29 @@ def buildRule(regex: str, action: str, dotdir: str):
 # Entrypoint
 def main():
 
-    parser = argparse.ArgumentParser(description="Yunolex, the greatest lexer of them all")
-    parser.add_argument('file', metavar="SPEC", help="format: python3 yunolex.py SPEC")
-    parser.add_argument('-i', metavar="PACKAGE", type=str,
-                        help="build a lexer package that integrates with other python code")
-    parser.add_argument('-p', metavar="DIR", type=str,
-                        help="create dot files in directory  representing automata used in lexing")
-    parser.add_argument('-o', metavar="FILE", type=str,
-                        help="name output file as FILE")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description="Yunolex, the greatest lexer of them all")
+    # parser.add_argument('file', metavar="SPEC", help="format: python3 yunolex.py SPEC")
+    # parser.add_argument('-i', metavar="PACKAGE", type=str,
+    #                     help="build a lexer package that integrates with other python code")
+    # parser.add_argument('-p', metavar="DIR", type=str,
+    #                     help="create dot files in directory  representing automata used in lexing")
+    # parser.add_argument('-o', metavar="FILE", type=str,
+    #                     help="name output file as FILE")
+    # args = parser.parse_args()
 
-    if len(sys.argv) < 2:
-        parser.print_help()
-        exit(1)
+    # if len(sys.argv) < 2:
+    #     parser.print_help()
+    #     exit(1)
 
-    file = args.file
-    pname = args.i
-    dir = args.p
-    outname = "lexer" if args.o is None else args.o
+    # file = args.file
+    # pname = args.i
+    # dir = args.p
+    # outname = "lexer" if args.o is None else args.o
+    # i = pname is not None
+    file = "/home/joemama/Documents/personalproject/chomusuke/chomtemp.spec"
+    pname = "chomtemp"
+    dir = None
+    outname = "chomtemp.py"
     i = pname is not None
     
     if i:
@@ -73,7 +78,7 @@ def main():
                 with open(outname, "a") as outfile:
                     outfile.write("    " + str(count) + ": " + str(buildRule(regex,action,dir)) + ",\n")
             else:
-                ind = line[:line.rfind(' ')].rfind(' ')
+                ind = line.rfind(' ')
                 with open(outname, "a") as outfile:
                     outfile.write("    " + str(count) + ": " + str(buildRule(line[:ind],line[ind + 1:],dir)) + ",\n")
             count += 1

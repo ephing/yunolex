@@ -65,17 +65,12 @@ def start(input: str):
             (rev, tk) = amt.revert()
             act = rules[rev]['action']
             if act[0:5] == "(ERR)":
-                print("LEX ERROR: " + act[5:] + " [" + str(tsLine) + ", " + str(tsCol) + "]\n")
+                print("LEX ERROR on " + input + ": " + act[5:] + " [" + str(tsLine) + ", " + str(tsCol) + "]\n")
             else:
                 if act[0] != '(':
-                    if act[-2] == 'u': 
-                        tkstream.append({
-                            "symbol":act[:act.rfind(' ')],
-                            "lexeme":token[:tk],"pos":[tsLine,tsCol]})
-                    else: 
-                        tkstream.append({
-                            "symbol":act[:act.rfind(' ')],
-                            "lexeme":None,"pos":[tsLine,tsCol]})
+                    tkstream.append({
+                        "symbol":act,
+                        "lexeme":token[:tk],"pos":[tsLine,tsCol]})
             amt.reset()
             # reset file reader to read from tk, in case revert() told us to consume fewer characters
             # then we already did
@@ -95,17 +90,12 @@ def start(input: str):
                 (rev, tk) = amt.revert()
                 act = rules[rev]['action']
                 if act[0:5] == "(ERR)":
-                    print("LEX ERROR: " + act[5:] + " [" + str(tsLine) + ", " + str(tsCol) + "]\n")
+                    print("LEX ERROR on " + input + ": " + act[5:] + " [" + str(tsLine) + ", " + str(tsCol) + "]\n")
                 else:
                     if act[0] != '(':
-                        if act[-2] == 'u': 
-                            tkstream.append({
-                                "symbol":act[:act.rfind(' ')],
-                                "lexeme":token[:tk],"pos":[tsLine,tsCol]})
-                        else: 
-                            tkstream.append({
-                                "symbol":act[:act.rfind(' ')],
-                                "lexeme":None,"pos":[tsLine,tsCol]})
+                        tkstream.append({
+                            "symbol":act,
+                            "lexeme":token[:tk],"pos":[tsLine,tsCol]})
         c = peek(input)
     tkstream.append({"symbol":EOF,"lexeme":None,"pos":[lineNum,colNum]})
     return tkstream
