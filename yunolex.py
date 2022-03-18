@@ -4,6 +4,7 @@ import Automata as AM
 import DFAPrinter as DP
 import argparse
 import sys, os, shutil
+from build import *
 
 # stored info from spec file
 def buildRule(regex: str, action: str, dotdir: str):
@@ -29,6 +30,8 @@ def main():
                         help="create dot files in directory  representing automata used in lexing")
     parser.add_argument('-o', metavar="FILE", type=str,
                         help="name output file as FILE")
+    parser.add_argument('-l', metavar='LANG', type=str,
+                        help="Language output by yunolex (currently supports python, haskell, and go")
     args = parser.parse_args()
 
     if len(sys.argv) < 2:
@@ -40,6 +43,15 @@ def main():
     dir = args.p
     outname = "lexer" if args.o is None else args.o
     i = pname is not None
+    lang = args.l
+
+    if lang == None:
+        lang = 'python'
+    elif lang.lower() not in ['python', 'haskell', 'go']:
+        parser.print_help()
+        exit(1)
+    else:
+        lang = lang.lower()
     
     if i:
         try:
@@ -47,16 +59,15 @@ def main():
         except OSError:
             pass
         outname = pname + "/" + outname
-        with open(pname + "/__init__.py", "w") as f:
-            f.write("\n")
-        shutil.copyfile("parser/lex.py", pname + "/lex.py")
+        if lang == 'python':
+            with open(pname + "/__init__.py", "w") as f:
+                f.write("\n")
+            shutil.copyfile("lexers/lex.py", pname + "/lex.py")
+        elif lang == 'haskell':
+            shutil.copyfile("lexers/lex.hs", pname + "/lex.hs")
 
+    rules = []
     with open(file,"r") as file:
-        with open(outname,"w") as outfile:
-            if i:
-                outfile.write("#!/usr/bin/env python3\nimport " + pname + ".lex as lex\n\nlex.rules = {\n")
-            else:
-                outfile.write("#!/usr/bin/env python3\nimport lex\n\nlex.rules = {\n")
         count = 0
         line = file.readline().rstrip()
         while line:
@@ -64,26 +75,24 @@ def main():
             if line[-1] == '\"':
                 action = "(ERR) " + line[line[:len(line)-1].rfind('\"'):]
                 regex = line[:line[:len(line)-1].rfind('\"') - 7]
-                with open(outname, "a") as outfile:
-                    outfile.write("    " + str(count) + ": " + str(buildRule(regex,action,dir)) + ",\n")
+                rules += [buildRule(regex,action,dir)]
             # (SKIP)
             elif line[-1] == ')':
                 regex = line[:line.rfind('(') - 1]
                 action = line[line.rfind('('):]
-                with open(outname, "a") as outfile:
-                    outfile.write("    " + str(count) + ": " + str(buildRule(regex,action,dir)) + ",\n")
+                rules += [buildRule(regex,action,dir)]
             else:
                 ind = line.rfind(' ')
-                with open(outname, "a") as outfile:
-                    outfile.write("    " + str(count) + ": " + str(buildRule(line[:ind],line[ind + 1:],dir)) + ",\n")
+                rules += [buildRule(line[:ind],line[ind + 1:],dir)]
             count += 1
             line = file.readline().rstrip()
-        with open(outname, "a") as outfile:
-            if i:
-                outfile.write("}\n")
-            else:
-                outfile.write("}\n\n")
-                outfile.write("lex.start()\n")
+    
+    if lang == 'python':
+        buildPython(outname, pname, rules)
+    elif lang == 'haskell':
+        buildHaskell(outname, rules)
+    elif lang == 'go':
+        buildGo()
 
 if __name__ == "__main__":
     main()
