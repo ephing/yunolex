@@ -6,7 +6,7 @@ import Control.Monad
 data Action where
     Name :: String -> Action
     Skip :: Action
-    Error :: String -> Action
+    Err :: String -> Action
     deriving (Show, Eq)
 
 type Automata = (Int, [Int], Action, Map Int (Map Char Int))

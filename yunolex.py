@@ -43,7 +43,7 @@ def main():
     dir = args.p
     outname = "lexer" if args.o is None else args.o
     i = pname is not None
-    lang = args.l
+    lang = 'python' if args.l is None else args.l
 
     if lang == None:
         lang = 'python'

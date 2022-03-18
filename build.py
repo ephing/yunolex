@@ -21,7 +21,7 @@ def buildHaskell(outname: str, rules):
         for x in rules:
             outfile.write("  (" + str(x['dfa']['startState']) + ", " + str(x['dfa']['finStates']) + ", ")
             if x['action'] == '(SKIP)': outfile.write("Skip")
-            elif x['action'][:5] == '(ERR)': outfile.write("Error" + x['action'][5:])
+            elif x['action'][:5] == '(ERR)': outfile.write("Err" + x['action'][5:])
             else: outfile.write("Name \"" + x['action'] + "\"")
             outfile.write(', fromList [\n')
             for y in range(len(x['dfa']['deltaT'])):
