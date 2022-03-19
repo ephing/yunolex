@@ -13,9 +13,12 @@ def buildPython(outname: str, pname: str, rules):
             outfile.write("]\n\n")
             outfile.write("lex.start()\n")
 
-def buildHaskell(outname: str, rules):
+def buildHaskell(outname: str, pname: str, rules):
     with open(outname, "w") as outfile:
-        outfile.write("{-# LANGUAGE GADTs, FlexibleContexts #-}\nimport Lexer\nimport Data.Map\n\n")
+        outfile.write("{-# LANGUAGE GADTs, FlexibleContexts #-}\n")
+        if pname != None:
+            outfile.write("module Lex_" + pname + " where\n")
+        outfile.write("import Lexer\nimport Data.Map\n\n")
         outfile.write("initAutomata :: [Lexer.Automata]\n")
         outfile.write("initAutomata = [\n")
         for x in rules:

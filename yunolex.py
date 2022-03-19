@@ -90,7 +90,7 @@ def main():
     if lang == 'python':
         buildPython(outname, pname, rules)
     elif lang == 'haskell':
-        buildHaskell(outname, rules)
+        buildHaskell(outname, pname, rules)
     elif lang == 'go':
         buildGo()
 

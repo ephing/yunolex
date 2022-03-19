@@ -202,7 +202,9 @@ def toDFA3(nfa: NFA):
         for st in range(len(res.deltaT)):
             for l in range(len(res.sigma)):
                 if res.deltaT[st][l] == ind[x]:
-                    ndelta[st][l] = [x]
+                    ndelta[st][l] = x
+                elif res.deltaT[st][l] == []:
+                    ndelta[st][l] = None
     res.deltaT = ndelta
     return res
 

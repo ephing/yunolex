@@ -1,101 +1,63 @@
-# this code is the majority of the tokenizer. Only code that gets generated is DFA stuff
 
 rules = []
 EOF = "\30"
-# keeps track of current and previous state, and whether a machine is accepted
-class AMTracker:
-    def __init__(self):
-        self.reset()
 
-    # delete search history
-    def reset(self) -> None:
-        self.states = [[x['dfa']['startState']] for x in rules]
+def getNextStates(machStates, c):
+    out = []
+    for state in range(len(machStates)):
+        if c in rules[state]['dfa']['sigma'] and machStates[state] != None:
+            cindex = rules[state]['dfa']['sigma'].index(c)
+            out.append(rules[state]['dfa']['deltaT'][machStates[state]][cindex])
+        else:
+            out.append(None)
+    return out
 
-    # transition machines based on input character
-    def delta(self,c) -> None:
-        for x in range(len(rules)):
-            try:
-                cindex = rules[x]['dfa']['sigma'].index(c)
-                self.states[x] = [rules[x]['dfa']['deltaT'][self.states[x][0]][cindex][0]] + self.states[x]
-            except:
-                self.states[x] = [None] + self.states[x]
+def death(states) -> bool:
+    return len(list(filter(lambda x: x != None, states))) == 0     
 
-    # returns non-dead machine index, or None if they're all dead
-    def death(self):
-        for st in range(len(self.states)):
-            if self.states[st][0] != None:
-                return st
-        return None
-
-    # checks all previous states and returns which machine was the winner as well as
-    # how many characters we actually consume with this token
-    def revert(self):
-        for x in range(len(self.states[0])):
-            for r in range(len(rules)):
-                try:
-                    if self.states[r][x] in rules[r]['dfa']['finStates']:
-                        return (r,len(self.states[0]) - x - 1)
-                except:
-                    pass            
-        raise Exception("No matching tokens!")
-
-sindex = 0
-def peek(f:str) -> str:
-    global sindex
-    if sindex >= len(f): return ""
-    return f[sindex]
+def getIndex(states) -> int:
+    for i in range(len(states)):
+        if states[i] != None:
+            return i
+    return -1
 
 def start(input: str):
-    global sindex
-    sindex = 0
-    tkstream = []
-    amt = AMTracker()
     lineNum = 1
     colNum = 1
-    tsLine = 1
-    tsCol = 1
+    machStates = list(map(lambda x: x['dfa']['startState'], rules))
     token = ""
-    # while not EOF
-    c = peek(input)
-    while len(c) != 0:
-        # move all machines
-        amt.delta(c)
-        # if they all dead
-        if amt.death() == None:
-            (rev, tk) = amt.revert()
-            act = rules[rev]['action']
-            if act[0:5] == "(ERR)":
-                print("LEX ERROR on " + input + ": " + act[5:] + " [" + str(tsLine) + ", " + str(tsCol) + "]\n")
+    bestFit = None
+    tkstream = []
+
+    while input != "":
+        if input == "" or death(nextStates := getNextStates(machStates, input[0])):
+            if bestFit == None:
+                if token == "":
+                    return []
+                else:
+                    raise Exception("Lex Error: Unexpected EOF in token \'" + token + "\'")
             else:
-                if act[0] != '(':
-                    tkstream.append({
-                        "symbol":act,
-                        "lexeme":token[:tk],"pos":[tsLine,tsCol]})
-            amt.reset()
-            # reset file reader to read from tk, in case revert() told us to consume fewer characters
-            # then we already did
-            sindex = sindex + tk - len(token)
-            tsLine = lineNum
-            tsCol = colNum - len(token) + tk
-            token = ""
+                tkstream.append(bestFit)
+                input = token[len(bestFit['lexeme']):] + input
+                token = ""
+                machStates = list(map(lambda x: x['dfa']['startState'], rules))
+                bestFit = None
         else:
-            sindex += 1
-            token += c
-            colNum += 1
-            if c == "\n":
+            machStates = nextStates
+            token = token + input[0]
+            if (i := getIndex(machStates)) != -1:
+                bestFit = {"symbol":rules[i]["action"], "lexeme":token, "pos":[lineNum, colNum]}
+            if input[0] == '\n': 
                 lineNum += 1
                 colNum = 1
-            # handle no \n before EOF
-            if len(peek(input)) == 0:
-                (rev, tk) = amt.revert()
-                act = rules[rev]['action']
-                if act[0:5] == "(ERR)":
-                    print("LEX ERROR on " + input + ": " + act[5:] + " [" + str(tsLine) + ", " + str(tsCol) + "]\n")
-                else:
-                    if act[0] != '(':
-                        tkstream.append({
-                            "symbol":act,
-                            "lexeme":token[:tk],"pos":[tsLine,tsCol]})
-        c = peek(input)
+            else:
+                colNum += 1
+            input = input[1:]
+    else:
+        if bestFit == None:
+            raise Exception("Lex Error: Unexpected EOF in token \'" + token + "\'")
+        tkstream.append(bestFit)
+
+    
     tkstream.append({"symbol":EOF,"lexeme":None,"pos":[lineNum,colNum]})
     return tkstream

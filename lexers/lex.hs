@@ -37,12 +37,11 @@ death :: [Maybe Int] -> Bool
 death = Prelude.foldr ((&&) . (==) Nothing) True
 
 getInd :: [Automata] -> [Maybe Int] -> Int -> Maybe Int
-getInd (a:as) (m:ms) n = if m == Nothing || notElem (unmaybe m) (finStates a) then getInd as ms (n + 1) else Just n
+getInd (a:as) (m:ms) n =
+    case m of
+        Nothing -> getInd as ms (n + 1)
+        Just m' -> if m' `notElem` finStates a then getInd as ms (n + 1) else Just n
 getInd _ _ _ = Nothing
-
-unmaybe :: Maybe a -> a
-unmaybe Nothing = error "unmaybe: cant unmaybe a nothing"
-unmaybe (Just n) = n
 
 moveAhead :: Char -> [Automata] -> [Maybe Int] -> [Maybe Int]
 moveAhead c (a:as) (m:ms) = case m of
@@ -57,17 +56,17 @@ tokDiff :: String -> String -> String
 tokDiff s t = Prelude.drop (length t) s
 
 lexer :: [Automata] -> String -> Maybe [Token]
-lexer a s = actualLexer a s "" (replicate (length a) (Just 0)) 1 1 []
+lexer a s = actualLexer a s "" (replicate (length a) (Just 0)) 1 1 Nothing
 
---              spec        input       token     state mach    row     col   tk track   output
-actualLexer :: [Automata] -> String -> String -> [Maybe Int] -> Int -> Int -> [Token] -> Maybe [Token]
+--              spec        input       token     state mach    row     col   the token        output
+actualLexer :: [Automata] -> String -> String -> [Maybe Int] -> Int -> Int -> Maybe Token -> Maybe [Token]
 actualLexer [] _ _ _ _ _ _  = Nothing
-actualLexer a s t m row col tks = do {
-  if s == "" || death (moveAhead (head s) a m) then 
-    case tks of
-      [] -> if t == "" then Just [] else Nothing
-      tok : _ -> 
-        case actualLexer a c "" r (tRow tok) (tCol tok + 1) [] of
+actualLexer a s t m row col tk = do {
+  if s == "" || death (moveAhead (head s) a m) then
+    case tk of
+      Nothing -> if t == "" then Just [] else Nothing
+      Just tok ->
+        case actualLexer a c "" r (tRow tok) (tCol tok + 1) Nothing of
           Nothing -> Nothing
           Just output -> Just (tok : output)
           where
@@ -78,12 +77,12 @@ actualLexer a s t m row col tks = do {
           where
               mv = moveAhead (head s) a m
               x = case getInd a mv 0 of
-                  Nothing -> tks
-                  Just n -> (action (a !! n), t ++ "\n", (row, col)) : tks
+                  Nothing -> tk
+                  Just n -> Just (action (a !! n), t ++ "\n", (row, col))
       hs -> actualLexer a (tail s) (t ++ [hs]) mv row (col + 1) x
           where
               mv = moveAhead (head s) a m
               x = case getInd a mv 0 of
-                  Nothing -> tks
-                  Just n -> (action (a !! n), t ++ [hs], (row, col)) : tks
+                  Nothing -> tk
+                  Just n -> Just (action (a !! n), t ++ [hs], (row, col))
 }
