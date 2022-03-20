@@ -13,7 +13,7 @@ type Token struct {
 	pos    [2]int
 }
 
-func Death(mach []int) bool {
+func death(mach []int) bool {
 	for _, v := range mach {
 		if v != -1 {
 			return false
@@ -22,7 +22,7 @@ func Death(mach []int) bool {
 	return true
 }
 
-func GetIndex(spec []Automata, mach []int) int {
+func getIndex(spec []Automata, mach []int) int {
 	for i := range spec {
 		for _, f := range spec[i].finStates {
 			if f == mach[i] {
@@ -33,7 +33,7 @@ func GetIndex(spec []Automata, mach []int) int {
 	return -1
 }
 
-func MoveAhead(c rune, spec []Automata, mach []int) []int {
+func moveAhead(c rune, spec []Automata, mach []int) []int {
 	out := make([]int, len(mach), cap(mach))
 	for i, v := range mach {
 		out[i] = -1
@@ -53,8 +53,8 @@ func Lex(spec []Automata, input []rune) (tkstream []Token, valid bool) {
 	token := make([]rune, 0, cap(input))
 	var bestFit *Token = nil
 	for len(input) != 0 {
-		mv := MoveAhead(input[0], spec, mach)
-		if len(input) == 0 || Death(mv) {
+		mv := moveAhead(input[0], spec, mach)
+		if len(input) == 0 || death(mv) {
 			if bestFit == nil {
 				if len(token) == 0 {
 					return tkstream, true
@@ -81,7 +81,7 @@ func Lex(spec []Automata, input []rune) (tkstream []Token, valid bool) {
 		mach = mv
 		// Save the read input token
 		token = append(token, input[0])
-		if i := GetIndex(spec, mach); i != -1 {
+		if i := getIndex(spec, mach); i != -1 {
 			bestFit = &Token{spec[i].action, token, [2]int{lineNum, colNum}}
 		}
 		colNum += 1
