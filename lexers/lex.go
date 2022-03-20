@@ -47,40 +47,45 @@ func moveAhead(c rune, spec []Automata, mach []int) []int {
 	return out
 }
 
+// Lex creates a stream of tokens using a lexical specification and a list of runes
 func Lex(spec []Automata, input []rune) (tkstream []Token, valid bool) {
 	lineNum, colNum := 1, 1
 	mach := make([]int, len(spec))
 	token := make([]rune, 0, cap(input))
 	var bestFit *Token = nil
 	for len(input) != 0 {
+		// Move all automata ahead 1 state using input[0]
 		mv := moveAhead(input[0], spec, mach)
+		// If entire input has been read, or every automata is in an invalid state
 		if len(input) == 0 || death(mv) {
+			// If no token has been recognized
 			if bestFit == nil {
 				if len(token) == 0 {
 					return tkstream, true
 				}
 				return tkstream, false
 			}
+			// If the token is listed as an error in the specification
 			if len((*bestFit).symbol) >= 5 && (*bestFit).symbol[:5] == "(ERR)" {
 				return tkstream, false
 			}
 			if (*bestFit).symbol != "(SKIP)" {
 				tkstream = append(tkstream, *bestFit)
 			}
-			// Append the found token
+			// Un-read characters that were not a part of the bestFit token
 			input = append(token[len((*bestFit).lexeme):], input...)
 			// Clear the context
 			token = make([]rune, 0, cap(input))
 			mach = make([]int, len(spec))
-			// Mark the best fit
 			bestFit = nil
 			// Continue to the next input
 			continue
 		}
-		// If input exists, start reading
+		// Update machine states to reflect the consumption of the input rune
 		mach = mv
-		// Save the read input token
+		// Save the read input token, for if we need to un-read it later
 		token = append(token, input[0])
+		// Find the bestFit token if it currently exists
 		if i := getIndex(spec, mach); i != -1 {
 			bestFit = &Token{spec[i].action, token, [2]int{lineNum, colNum}}
 		}
@@ -93,11 +98,11 @@ func Lex(spec []Automata, input []rune) (tkstream []Token, valid bool) {
 		// Trim the input by removing the first element we read
 		input = input[1:]
 	}
-	// Failed at best fit, bail
+	// The final set of runes did not match a token, bail
 	if bestFit == nil {
 		return tkstream, false
 	}
-	// Save the full token stream
+	// Add last token to the token stream
 	tkstream = append(tkstream, *bestFit)
 	// Mark the terminator to end the stream token
 	tkstream = append(tkstream, Token{"\x18", []rune{'\x18'}, [2]int{0, 0}})

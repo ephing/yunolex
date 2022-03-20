@@ -1,4 +1,6 @@
 
+# This file contains functions that print out the lexical specification in various languages
+
 def buildPython(outname: str, pname: str, rules):
     with open(outname,"w") as outfile:
         if pname != None:
