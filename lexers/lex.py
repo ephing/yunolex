@@ -37,10 +37,10 @@ def start(input: str):
                 else:
                     raise Exception("Lex Error: Unexpected EOF in token \'" + token + "\'")
             else:
-                if bestFit["action"][:5] == "(ERR)":
-                    print("Lex Error:" + bestFit["action"][5:])
+                if len(bestFit["symbol"]) >= 5 and bestFit["symbol"][:5] == "(ERR)":
+                    print("Lex Error:" + bestFit["symbol"][5:])
                     return tkstream, False
-                elif bestFit["action"] != "(SKIP)":
+                elif bestFit["symbol"] != "(SKIP)":
                     tkstream.append(bestFit)
                 input = token[len(bestFit['lexeme']):] + input
                 token = ""
