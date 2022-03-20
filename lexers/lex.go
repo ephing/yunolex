@@ -1,4 +1,4 @@
-package lex
+package lexer
 
 type Automata struct {
 	startState int
@@ -36,63 +36,70 @@ func getIndex(spec []Automata, mach []int) int {
 func moveAhead(c rune, spec []Automata, mach []int) []int {
 	out := make([]int, len(mach), cap(mach))
 	for i, v := range mach {
-		if v != -1 {
-			if t, valid := spec[i].deltaT[v][c]; valid {
-				out[i] = t
-			} else {
-				out[i] = -1
-			}
-		} else {
-			out[i] = -1
+		out[i] = -1
+		if v == -1 {
+			continue
+		}
+		if t, valid := spec[i].deltaT[v][c]; valid {
+			out[i] = t
 		}
 	}
 	return out
 }
 
-func lex(spec []Automata, input []rune) (tkstream []Token, valid bool) {
+func Lex(spec []Automata, input []rune) (tkstream []Token, valid bool) {
 	lineNum, colNum := 1, 1
-	mach := make([]int, len(spec), len(spec))
+	mach := make([]int, len(spec))
 	token := make([]rune, 0, cap(input))
 	var bestFit *Token = nil
-
 	for len(input) != 0 {
-		if mv := moveAhead(input[0], spec, mach); len(input) == 0 || death(mv) {
+		mv := moveAhead(input[0], spec, mach)
+		if len(input) == 0 || death(mv) {
 			if bestFit == nil {
 				if len(token) == 0 {
 					return tkstream, true
-				} else {
-					return tkstream, false
 				}
-			} else {
-				if len((*bestFit).symbol) >= 5 && (*bestFit).symbol[:5] == "(ERR)" {
-					return tkstream, false
-				} else if (*bestFit).symbol != "(SKIP)" {
-					tkstream = append(tkstream, *bestFit)
-				}
-				input = append(token[len((*bestFit).lexeme):], input...)
-				token = make([]rune, 0, cap(input))
-				mach = make([]int, len(spec), len(spec))
-				bestFit = nil
+				return tkstream, false
 			}
-		} else {
-			mach = mv
-			token = append(token, input[0])
-			if i := getIndex(spec, mach); i != -1 {
-				bestFit = &Token{spec[i].action, token, [2]int{lineNum, colNum}}
+			if len((*bestFit).symbol) >= 5 && (*bestFit).symbol[:5] == "(ERR)" {
+				return tkstream, false
 			}
-			if input[0] == '\n' {
-				lineNum += 1
-				colNum = 1
-			} else {
-				colNum += 1
+			if (*bestFit).symbol != "(SKIP)" {
+				tkstream = append(tkstream, *bestFit)
 			}
-			input = input[1:]
+			// Append the found token
+			input = append(token[len((*bestFit).lexeme):], input...)
+			// Clear the context
+			token = make([]rune, 0, cap(input))
+			mach = make([]int, len(spec))
+			// Mark the best fit
+			bestFit = nil
+			// Continue to the next input
+			continue
 		}
+		// If input exists, start reading
+		mach = mv
+		// Save the read input token
+		token = append(token, input[0])
+		if i := getIndex(spec, mach); i != -1 {
+			bestFit = &Token{spec[i].action, token, [2]int{lineNum, colNum}}
+		}
+		colNum += 1
+		// Check if it's a newline, adjust the line/column numbers
+		if input[0] == '\n' {
+			lineNum += 1
+			colNum = 1
+		}
+		// Trim the input by removing the first element we read
+		input = input[1:]
 	}
+	// Failed at best fit, bail
 	if bestFit == nil {
 		return tkstream, false
 	}
+	// Save the full token stream
 	tkstream = append(tkstream, *bestFit)
+	// Mark the terminator to end the stream token
 	tkstream = append(tkstream, Token{"\x18", []rune{'\x18'}, [2]int{0, 0}})
 	return tkstream, true
 }
