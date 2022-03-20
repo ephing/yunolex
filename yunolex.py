@@ -65,6 +65,11 @@ def main():
             shutil.copyfile("lexers/lex.py", pname + "/lex.py")
         elif lang == 'haskell':
             shutil.copyfile("lexers/lex.hs", pname + "/lex.hs")
+        elif lang == 'go':
+            with open(pname + "/lex.go", "w") as outfile:
+                outfile.write("package " + pname + "\n")
+                with open("lexers/lex.go", "r") as lexfile:
+                    outfile.write(''.join(lexfile.readlines()[1:]))
 
     rules = []
     with open(file,"r") as file:
@@ -92,7 +97,7 @@ def main():
     elif lang == 'haskell':
         buildHaskell(outname, pname, rules)
     elif lang == 'go':
-        buildGo()
+        buildGo(outname, pname, rules)
 
 if __name__ == "__main__":
     main()

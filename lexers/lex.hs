@@ -12,6 +12,9 @@ data Action where
 type Automata = (Int, [Int], Action, Map Int (Map Char Int))
 type Token = (Action, String, (Int, Int))
 
+name :: Token -> Action
+name (a, _, _) = a
+
 lexeme :: Token -> String
 lexeme (_, t, _) = t
 
@@ -68,7 +71,11 @@ actualLexer a s t m row col tk = do {
       Just tok ->
         case actualLexer a c "" r (tRow tok) (tCol tok + 1) Nothing of
           Nothing -> Nothing
-          Just output -> Just (tok : output)
+          Just output -> 
+              case name tok of
+                Name n -> Just (tok : output)
+                Skip -> Just output
+                Err e -> Nothing
           where
               r = replicate (length a) (Just 0)
               c = tokDiff t (lexeme tok) ++ s

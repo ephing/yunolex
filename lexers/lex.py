@@ -37,7 +37,11 @@ def start(input: str):
                 else:
                     raise Exception("Lex Error: Unexpected EOF in token \'" + token + "\'")
             else:
-                tkstream.append(bestFit)
+                if bestFit["action"][:5] == "(ERR)":
+                    print("Lex Error:" + bestFit["action"][5:])
+                    return tkstream, False
+                elif bestFit["action"] != "(SKIP)":
+                    tkstream.append(bestFit)
                 input = token[len(bestFit['lexeme']):] + input
                 token = ""
                 machStates = list(map(lambda x: x['dfa']['startState'], rules))
