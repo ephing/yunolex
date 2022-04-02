@@ -17,7 +17,7 @@ def death(states) -> bool:
 
 def getIndex(states) -> int:
     for i in range(len(states)):
-        if states[i] != None:
+        if states[i] != None and states[i] in rules[i]['dfa']['finStates']:
             return i
     return -1
 
